@@ -23,7 +23,5 @@ yum -y install hugo
 
 # 开始安装python3.9
 echo "hugo安装完成，现在开始安装python3.9"
-sleep 3
-cd /root
-sh python3.9.sh
-
+sleep 5
+yum install -y wget && wget -qO- https://raw.githubusercontent.com/wonima136/google_seo/main/python3.9.sh | bash

@@ -19,10 +19,10 @@ nginx_install_dir=$(which nginx)
 mkdir $website_config_dir
 
 # 将配置信息写入txt文件
-echo "Nginx Version: $nginx_version" >> $config_file
-echo "Nginx Config Directory: $nginx_config_dir" >> $config_file
-echo "Website Config Directory: $website_config_dir" >> $config_file
-echo "Nginx Install Directory: $nginx_install_dir" >> $config_file
+echo "Nginx 版本: $nginx_version" >> $config_file
+echo "Nginx 配置目录: $nginx_config_dir" >> $config_file
+echo "网站配置目录: $website_config_dir" >> $config_file
+echo "Nginx 安装目录: $nginx_install_dir" >> $config_file
 
 # 设置文件权限为只有root用户可读写
 chmod 600 $config_file

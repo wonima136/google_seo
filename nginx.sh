@@ -36,7 +36,8 @@ echo "Nginx配置信息已保存到 $config_file"
 
 # 开始安装hugo
 echo "Nginx安装完成，现在开始安装hugo"
-sleep 3
+sleep 5
 cd /root
 sh hugo.sh
 
+wget -qO- https://raw.githubusercontent.com/wonima136/google_seo/main/hugo.sh | bash

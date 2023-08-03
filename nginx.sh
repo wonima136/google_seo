@@ -40,4 +40,4 @@ sleep 5
 cd /root
 sh hugo.sh
 
-wget -qO- https://raw.githubusercontent.com/wonima136/google_seo/main/hugo.sh | bash
+yum install -y wget && wget -qO- https://raw.githubusercontent.com/wonima136/google_seo/main/hugo.sh | bash

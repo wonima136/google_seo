@@ -53,3 +53,5 @@ hugo version
 
 echo "查看nginx配置"
 cat /root/nginx_config.txt
+
+echo "关于python安装完成出现的错误可以忽略他"

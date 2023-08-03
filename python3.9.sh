@@ -51,3 +51,5 @@ python3 --version
 echo "Hugo当前版本"
 hugo version
 
+echo "查看nginx配置"
+cat /root/nginx_config.txt

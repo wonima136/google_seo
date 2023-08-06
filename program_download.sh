@@ -13,7 +13,9 @@ sudo yum install svn -y
 
 # 下载hugo程序
 sudo svn checkout https://github.com/wonima136/google_seo/trunk/hugo
+sudo mkdir -p /home/wwwroot/hugo/content
 echo "下载hugo程序完成..."
+
 
 # 下载脚本
 sudo svn checkout https://github.com/wonima136/google_seo/trunk/python

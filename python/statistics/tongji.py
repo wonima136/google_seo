@@ -1,6 +1,6 @@
 import os
 
-txt_file = '/home/hugo/public/dir.txt'
+txt_file = 'dir.txt'
 
 def replace_googleid(path, googleid):
     file_path = os.path.join(path, 'index.html')

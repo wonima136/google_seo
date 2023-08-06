@@ -22,13 +22,13 @@ def generate_random_domains_for_each_top_domain(num_domains, top_domains):
     return all_domains
 
 # 从domain.txt读取所有顶级域名
-with open("/home/domains.txt", "r") as file:
+with open("/home/wwwroot/python/domains.txt", "r") as file:
     top_domains = [line.strip() for line in file.readlines()]
 
 num_domains = 2000
 random_domains = generate_random_domains_for_each_top_domain(num_domains, top_domains)
 
-with open("/home/random_domains.txt", "w") as file:
+with open("/home/wwwroot/python/random_domains.txt", "w") as file:
     for domain in random_domains:
         file.write(domain + "\n")
 
@@ -42,14 +42,14 @@ server
     listen 80;
     server_name example.com;
     index index.html;
-    root /home/hugo/public/example.com;
-    access_log  /home/hugo/public/example.com/example.com.log;
+    root /home/wwwroot/hugo/public/example.com;
+    access_log  /home/wwwroot/hugo/public/example.com/example.com.log;
 }
 ######################################################################## # 多个配置文件分割符号
 '''
 
 # 从 "random_domains.txt" 中读取域名，而不是从 "conf.txt"
-with open("/home/hugo/random_domains.txt", "r", encoding="utf-8") as file:
+with open("/home/wwwroot/python/random_domains.txt", "r", encoding="utf-8") as file:
     domains = file.readlines()
 
 result = ''

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 安装第三方yum源
+sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
 # 安装nginx
 yum install -y nginx
 

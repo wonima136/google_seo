@@ -82,13 +82,13 @@ cursor.close()
 # 关闭连接
 cnx.close()
 
-with open('/home/random_domains.txt', 'r', encoding='utf-8') as domain_file:
+with open('/home/wwwroot/random_domains.txt', 'r', encoding='utf-8') as domain_file:
     file_names = [line.strip() for line in domain_file]
 
 # 直接在content目录下保存Markdown文件
 for i, (title, markdown_content) in enumerate(markdown_contents):
     file_name = file_names[i]
-    file_path = '/home/hugo/content/' + file_name + '.md'
+    file_path = '/home/wwwroot/hugo/content/' + file_name + '.md'
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(markdown_content)
 

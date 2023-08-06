@@ -1,4 +1,6 @@
 #!/bin/bash
+BLUE=$(tput setaf 4)
+NORMAL=$(tput sgr0)
 
 # 创建wwwroot文件
 sudo mkdir -p  /home/wwwroot
@@ -20,6 +22,8 @@ echo "下载配套python脚本完成..."
 # 给wwwroot最高权限权限
 sudo chmod 777 /home/wwwroot/*
 
-echo "资料准备完成"
-echo "在content.py配置数据库信息"
-echo "domains.txt添加要上的顶级域名"
+clear
+
+echo "${BLUE}资料准备完成${NORMAL}"
+echo "${BLUE}在content.py配置数据库信息${NORMAL}"
+echo "${BLUE}domains.txt添加要上的顶级域名${NORMAL}"

@@ -27,6 +27,6 @@
 
 clear
 
-echo "${BLUE}          资料准备完成${NORMAL}"
-echo "${BLUE}          请在content.py中配置数据库信息${NORMAL}"
-echo "${BLUE}          请在domains.txt中添加要上的顶级域名${NORMAL}"
+echo "${BLUE}资料准备完成${NORMAL}"
+echo "${BLUE}请在content.py中配置数据库信息${NORMAL}"
+echo "${BLUE}请在domains.txt中添加要上的顶级域名${NORMAL}"

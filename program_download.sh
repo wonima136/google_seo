@@ -29,6 +29,30 @@ sudo chmod 777 /home/wwwroot
 
 clear
 
+echo "查询nginx是否运行"
+# 查询nginx是否运行
+systemctl status nginx
+echo "------------------------------------------------"
+
+# 查看nginx版本
+echo "nginx当前版本"
+nginx -v
+echo "------------------------------------------------"
+
+# 查看python版本
+echo "python当前版本"
+python3 --version
+echo "------------------------------------------------"
+
+# 显示Hugo版本
+echo "Hugo当前版本"
+hugo version
+echo "------------------------------------------------"
+
+echo "查看nginx配置"
+cat /root/nginx_config.txt
+echo "------------------------------------------------"
+
 echo "${BLUE}资料准备完成${NORMAL}"
 echo "${BLUE}请在content.py中配置数据库信息${NORMAL}"
 echo "${BLUE}请在domains.txt中添加要上的顶级域名${NORMAL}"

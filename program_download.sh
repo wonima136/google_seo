@@ -19,8 +19,11 @@ echo "下载hugo程序完成..."
 sudo svn checkout https://github.com/wonima136/google_seo/trunk/python
 echo "下载配套python脚本完成..."
 
-# 赋予wwwroot文件夹最高权限
+# 赋予wwwroot文件夹下所有文件最高权限
 sudo chmod 777 /home/wwwroot/*
+
+# 赋予wwwroot文件夹最高权限
+sudo chmod 777 /home/wwwroot
 
 clear
 

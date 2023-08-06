@@ -82,7 +82,7 @@ cursor.close()
 # 关闭连接
 cnx.close()
 
-with open('/home/wwwroot/random_domains.txt', 'r', encoding='utf-8') as domain_file:
+with open('/home/wwwroot/python/random_domains.txt', 'r', encoding='utf-8') as domain_file:
     file_names = [line.strip() for line in domain_file]
 
 # 直接在content目录下保存Markdown文件

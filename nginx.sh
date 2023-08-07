@@ -30,6 +30,9 @@ echo "Nginx 安装目录: $nginx_install_dir" >> $config_file
 # 设置文件权限为只有root用户可读写
 chmod 600 $config_file
 
+# 加入nginx配置调整
+sudo sed -i '/http {/a \ \ \ \ server_names_hash_max_size 1024;\n\ \ \ \ server_names_hash_bucket_size 512;' /etc/nginx/nginx.conf
+
 # 创建用户
 sudo useradd -r nginx
 # 开启nginx

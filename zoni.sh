@@ -27,6 +27,7 @@ sudo hugo
 sudo nginx -s reload
 echo "${BLUE}网站搭建成功${NORMAL}"
 echo "--------------------------------------------------"
+echo "${BLUE}Nginx配置目录：/etc/nginx${NORMAL}"
 echo "${BLUE}网站程序路径：/home/wwwroot/hugo${NORMAL}"
 echo "${BLUE}MD文档路径：/home/wwwroot/hugo/content${NORMAL}"
 echo "${BLUE}网站静态文件：/home/wwwroot/hugo/public${NORMAL}"

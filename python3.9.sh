@@ -33,6 +33,4 @@ rm -rf Python-3.9.10.tgz
 # 创建版本文件
 touch /root/version
 
-# 开始下载程序跟脚本
-sudo yum install -y wget && wget -qO- https://raw.githubusercontent.com/wonima136/google_seo/main/program_download.sh | bash
 

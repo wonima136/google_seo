@@ -1,61 +1,30 @@
-import random
-import string
-
-def generate_subdomain(length=5):
-    characters = string.ascii_lowercase + string.digits
-    subdomain = ''.join(random.choice(characters) for _ in range(length))
-    return subdomain
-
-def generate_domain(top_domain):
-    subdomain = generate_subdomain()
-    domain = f"{subdomain}.{top_domain}"
-    return domain
-
-def generate_random_domains_for_each_top_domain(num_domains, top_domains):
-    all_domains = set()
-    for top_domain in top_domains:
-        domains = set()  # 使用set来存储对每个顶级域名生成的唯一二级域名
-        while len(domains) < num_domains:
-            domain = generate_domain(top_domain)
-            domains.add(domain)
-        all_domains.update(domains)  # 将这些二级域名添加到总集合中
-    return all_domains
-
-# 从domain.txt读取所有顶级域名
-with open("/home/wwwroot/python/domains.txt", "r") as file:
-    top_domains = [line.strip() for line in file.readlines()]
-
-num_domains = 2000
-random_domains = generate_random_domains_for_each_top_domain(num_domains, top_domains)
-
-with open("/home/wwwroot/python/random_domains.txt", "w") as file:
-    for domain in random_domains:
-        file.write(domain + "\n")
-
-print("随机生成的二级域名已保存在random_domains.txt中")
+import os
 
 # 第二段代码
-
+# {domain_1} 用于调用，完整域名
+# {domain_2} 用于调用，顶级域名
 kkk = '''
 server
 {
     listen 80;
-    server_name example.com;
+    server_name {domain_1};
     index index.html;
-    root /home/wwwroot/hugo/public/example.com;
-    access_log  /home/wwwroot/hugo/public/example.com/example.com.log;
+    root /home/wwwroot/hugo/public/{domain_1};
+    access_log  /home/wwwroot/tongji/{domain_2}.log;
 }
-######################################################################## # 多个配置文件分割符号
+########################################################################
 '''
 
-# 从 "random_domains.txt" 中读取域名，而不是从 "conf.txt"
-with open("/home/wwwroot/python/random_domains.txt", "r", encoding="utf-8") as file:
-    domains = file.readlines()
+# 读取指定文件夹下的所有 .md 文件的文件名
+folder_path = "/home/wwwroot/hugo/content/"
+md_files = [file for file in os.listdir(folder_path) if file.endswith(".md")]
 
 result = ''
-for domain in domains:
-    domain = domain.strip()  # 删除尾部的换行符
-    k1 = kkk.replace("example.com", domain)
+for file_name in md_files:
+    domain_1 = file_name.split(".md")[0]
+    domain_2 = domain_1.split(".")[1]
+    k1 = kkk.replace("{domain_1}", domain_1)
+    k1 = k1.replace("{domain_2}", domain_2)
     result += k1
 
 # 将结果写入文件

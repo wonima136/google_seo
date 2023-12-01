@@ -13,13 +13,10 @@ fi
 # 根据不同的发行版，执行不同的命令安装必要的包
 if [ "$OS" == "Ubuntu" ]; then
     sudo apt-get update
-    # 安装wget和tar以及其他必要的包
     sudo apt-get install -y wget tar zlib1g-dev libbz2-dev libssl-dev libncurses5-dev libsqlite3-dev libreadline-dev tk-dev gcc make
 elif [ "$OS" == "CentOS Linux" ]; then
-    # 安装wget和tar以及其他必要的包
     sudo yum install -y wget tar zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gcc make
 else
-    # 如果不是Ubuntu或CentOS，输出错误信息并退出
     echo "不支持的操作系统，退出"
     exit 1
 fi
@@ -34,7 +31,6 @@ cd Python-3.9.8
 make && sudo make install
 
 # 设置环境变量
-# 注意这里我们使用了'>>'来追加内容而不是覆盖文件
 echo 'export PATH=/usr/local/Python39/bin:$PATH' >> ~/.bash_profile
 echo 'export PYTHON_HOME=/usr/local/Python39' >> ~/.bash_profile
 echo 'export PATH=$PYTHON_HOME/bin:$PATH' >> ~/.bash_profile
@@ -52,6 +48,12 @@ elif [ "$OS" == "CentOS Linux" ]; then
     sudo yum install -y epel-release
     sudo yum install -y screen
 fi
+
+# 找到当前python3的路径
+python3_path=$(which python3)
+
+# 创建新的符号链接
+sudo ln -sf /usr/local/Python39/bin/python3 $python3_path
 
 # 检查python3现在是否指向新安装的Python 3.9.8
 python3 --version

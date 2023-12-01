@@ -34,6 +34,7 @@ cd Python-3.9.8
 make && sudo make install
 
 # 设置环境变量
+# 注意这里我们使用了'>>'来追加内容而不是覆盖文件
 echo 'export PATH=/usr/local/Python39/bin:$PATH' >> ~/.bash_profile
 echo 'export PYTHON_HOME=/usr/local/Python39' >> ~/.bash_profile
 echo 'export PATH=$PYTHON_HOME/bin:$PATH' >> ~/.bash_profile
@@ -43,3 +44,14 @@ source ~/.bash_profile
 
 # 显示新安装的Python版本
 /usr/local/Python39/bin/python3 --version
+
+# 安装screen
+if [ "$OS" == "Ubuntu" ]; then
+    sudo apt-get install -y screen
+elif [ "$OS" == "CentOS Linux" ]; then
+    sudo yum install -y epel-release
+    sudo yum install -y screen
+fi
+
+# 检查python3现在是否指向新安装的Python 3.9.8
+python3 --version

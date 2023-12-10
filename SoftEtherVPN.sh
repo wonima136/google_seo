@@ -45,4 +45,4 @@ expect << EOF
     send "\r"
     expect eof
 EOF
-
+echo "SoftEtherVPN安装完成"

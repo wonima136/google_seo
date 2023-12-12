@@ -89,7 +89,7 @@ EOF
   systemctl enable squid.service #设置开机自动启动
 }
 function install_socks5() {
-  wget --no-check-certificate https://raw.github.com/Lozy/danted/master/install.sh -O install_proxy.sh
+  wget --no-check-certificate https://raw.githubusercontent.com/wonima136/google_seo/main/install.sh -O install_proxy.sh
   bash install_proxy.sh --port=6969 --user=111 --passwd=111
 }
 install_http

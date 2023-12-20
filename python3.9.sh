@@ -1,4 +1,5 @@
 #!/bin/bash
+cd /root
 
 # 确定Linux发行版
 if [ -f /etc/os-release ]; then

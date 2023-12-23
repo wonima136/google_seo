@@ -40,6 +40,8 @@ make && sudo make install
 echo 'export PATH=/usr/local/Python39/bin:$PATH' >> ~/.bash_profile
 echo 'export PYTHON_HOME=/usr/local/Python39' >> ~/.bash_profile
 echo 'export PATH=$PYTHON_HOME/bin:$PATH' >> ~/.bash_profile
+echo 'export PATH' >> ~/.bash_profile
+
 
 # 使环境变量生效
 source ~/.bash_profile

@@ -15,8 +15,11 @@ sudo yum install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
 
-# 安装MySQL
-sudo yum install -y mysql-server
+# 添加MySQL官方仓库
+sudo rpm -Uvh https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+
+# 安装MySQL 5.7
+sudo yum install -y mysql-community-server
 
 # 启动MySQL服务并设置为开机自启
 sudo systemctl start mysqld
@@ -34,7 +37,7 @@ sudo systemctl start php-fpm
 sudo systemctl enable php-fpm
 
 # 显示安装的服务状态
-echo "Nginx, MySQL, and PHP-7.4 have been installed and started."
+echo "Nginx, MySQL 5.7, and PHP-7.4 have been installed and started."
 echo "Nginx version: $(nginx -v)"
 echo "MySQL service status: $(systemctl status mysqld | grep 'Active')"
 echo "PHP version: $(php -v | head -n 1)"

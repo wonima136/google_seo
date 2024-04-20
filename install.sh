@@ -1,43 +1,55 @@
 #!/bin/bash
 
-# 安装EPEL和Remi仓库
-sudo yum install -y epel-release yum-utils
-sudo yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-sudo yum-config-manager --enable remi-php74
+# 更新软件包列表
+echo "正在更新软件包列表..."
+yum update -y
 
-# 更新软件包索引
-sudo yum update -y
+# 安装nginx
+echo "正在安装nginx..."
+yum install -y epel-release
+yum install -y nginx
+systemctl start nginx
+systemctl enable nginx
 
-# 安装Nginx
-sudo yum install -y nginx
+# 安装PHP 7.4
+echo "正在安装PHP 7.4..."
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum install -y yum-utils
+yum-config-manager --enable remi-php74
+yum install -y php php-cli php-fpm php-mysql php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json
 
-# 启动Nginx服务并设置为开机自启
-sudo systemctl start nginx
-sudo systemctl enable nginx
+# 安装 MySQL 5.7
+echo "正在安装MySQL 5.7..."
+wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+rpm -ivh mysql57-community-release-el7-11.noarch.rpm
+yum install -y mysql-server
+systemctl start mysqld
 
-# 添加MySQL官方仓库
-sudo rpm -Uvh https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+# MySQL安全配置，设置root用户密码
+echo "正在进行MySQL安全配置..."
+mysql_secure_installation
 
-# 安装MySQL 5.7
-sudo yum install -y mysql-community-server
+# 询问用户输入MySQL root密码
+echo "请输入MySQL root用户的密码:"
+read -s root_password
 
-# 启动MySQL服务并设置为开机自启
-sudo systemctl start mysqld
-sudo systemctl enable mysqld
+# 赋予所有数据库的所有权限给root用户
+echo "正在配置MySQL用户权限..."
+mysql -uroot -p${root_password} -e "grant all on *.* to 'root'@'%' identified by '${root_password}';"
 
-# MySQL安装后自动设置root密码
-NEW_ROOT_PASSWORD='f7a910dfcb021ff'
-sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${NEW_ROOT_PASSWORD}'; FLUSH PRIVILEGES;"
+# 关闭防火墙
+echo "正在关闭防火墙..."
+systemctl stop firewalld
+systemctl disable firewalld
 
-# 安装PHP及其与MySQL交互的扩展
-sudo yum install -y php php-mysqlnd php-fpm
+# 开启3306端口
+echo "正在开启3306端口..."
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --reload
 
-# 启动PHP-fpm服务并设置为开机自启
-sudo systemctl start php-fpm
-sudo systemctl enable php-fpm
-
-# 显示安装的服务状态
-echo "Nginx, MySQL 5.7, and PHP-7.4 have been installed and started."
-echo "Nginx version: $(nginx -v)"
-echo "MySQL service status: $(systemctl status mysqld | grep 'Active')"
-echo "PHP version: $(php -v | head -n 1)"
+# 输出nginx，php，mysql的状态和版本
+echo "正在获取nginx，php，mysql的状态和版本..."
+systemctl status nginx
+php -v
+systemctl status mysqld

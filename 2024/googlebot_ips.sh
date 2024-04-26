@@ -21,3 +21,6 @@ curl https://www.addlink.lol/data/ip.txt | awk '{print "allow " $1 ";"}' > /www/
 
 # 将文件权限设置为777
 chmod 777 /www/googlebot_ips/*
+
+#重载nginx
+/etc/init.d/nginx reload

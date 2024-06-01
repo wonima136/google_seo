@@ -3,6 +3,11 @@
 # 获取当前日期
 current_date=$(date +%Y-%m-%d)
 
+# 检查父文件夹是否存在，如果不存在则创建
+if [ ! -d "/www/wwwlogs/tongji" ]; then
+    sudo mkdir -p /www/wwwlogs/tongji
+fi
+
 # 检查当天日期文件夹是否存在
 if [ -d "/www/wwwlogs/tongji/${current_date}" ]; then
     echo "当天日期文件夹已存在，跳过创建"

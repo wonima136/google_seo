@@ -10,11 +10,20 @@ if ! [ -x "$(command -v jq)" ]; then
   sudo yum install jq -y
 fi
 
-# 获取 Cloudflare 地址，添加 set_real_ip_from 前缀并保存到文件中
-curl https://www.cloudflare.com/ips-v4 | awk '{print "set_real_ip_from " $1 ";"}' > /www/googlebot_ips/cloudflare_ips_v4.txt && chmod 777 /www/googlebot_ips/cloudflare_ips_v4.txt
+# 临时文件用于存储新数据
+temp_file="/tmp/new_googlebot_ips.txt"
 
-# 从 Google JSON 数据获取地址，如果非空且有效，则添加'allow'到文件中
-curl https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | .ipv4Prefix, .ipv6Prefix' | while read -r ip; do if [[ $ip != "null" ]]; then echo "allow $ip;" >> /www/googlebot_ips/googlebot_ips.txt; fi; done
+# 获取 Cloudflare 地址，添加 set_real_ip_from 前缀并保存到临时文件中
+curl https://www.cloudflare.com/ips-v4 | awk '{print "set_real_ip_from " $1 ";"}' > "$temp_file" && chmod 777 "$temp_file"
+
+# 从 Google JSON 数据获取地址，如果非空且有效，则追加到临时文件中
+curl https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | .ipv4Prefix, .ipv6Prefix' | while read -r ip; do if [[ $ip != "null" ]]; then echo "allow $ip;" >> "$temp_file"; fi; done
+
+# 从 Bing JSON 数据获取地址，如果非空且有效，则追加到临时文件中
+curl https://www.bing.com/toolbox/bingbot.json | jq -r '.[] | .ipv4Prefix' | while read -r ip; do if [[ $ip != "null" ]]; then echo "allow $ip;" >> "$temp_file"; fi; done
+
+# 将临时文件覆盖到 googlebot_ips.txt
+mv "$temp_file" /www/googlebot_ips/googlebot_ips.txt
 
 # 将文件权限设置为777
 chmod 777 /www/googlebot_ips/*

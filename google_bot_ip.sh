@@ -22,22 +22,14 @@ cp /www/googlebot_ips/googlebot_ips.txt /www/googlebot_ips/googlebot_ips.txt.bak
 # 清空 googlebot_ips.txt 文件
 > /www/googlebot_ips/googlebot_ips.txt
 
-# 从 Google JSON 数据获取地址，如果非空且有效，则追加到 googlebot_ips.txt 文件中
-curl https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | .ipv4Prefix, .ipv6Prefix' | while read -r ip; do
-  if [[ $ip != "null" ]]; then
-    echo "allow $ip;" >> /www/googlebot_ips/googlebot_ips.txt
-  fi
-done
+# 从 Google JSON 数据获取地址，如果存在有效的 ipv4Prefix，则追加到 googlebot_ips.txt 文件中
+curl -s https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | select(.ipv4Prefix) | .ipv4Prefix' >> /www/googlebot_ips/googlebot_ips.txt
 
 # 还原 googlebot_ips.txt 文件，将备份的内容追加到末尾
 cat /www/googlebot_ips/googlebot_ips.txt.bak >> /www/googlebot_ips/googlebot_ips.txt
 
 # 从 Bing JSON 数据获取地址，如果非空且有效，则追加到 googlebot_ips.txt 文件末尾
-curl https://www.bing.com/toolbox/bingbot.json | jq -r '.[] | .ipv4Prefix' | while read -r ip; do
-  if [[ $ip != "null" ]]; then
-    echo "allow $ip;" >> /www/googlebot_ips/googlebot_ips.txt
-  fi
-done
+curl -s https://www.bing.com/toolbox/bingbot.json | jq -r '.[] | select(.ipv4Prefix) | .ipv4Prefix' >> /www/googlebot_ips/googlebot_ips.txt
 
 # 删除备份文件
 rm /www/googlebot_ips/googlebot_ips.txt.bak

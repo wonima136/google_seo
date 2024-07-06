@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# qqqq
 # 检查目录是否存在，如果不存在则创建目录
 if [ ! -d "/www/googlebot_ips/" ]; then
   mkdir -p /www/googlebot_ips/

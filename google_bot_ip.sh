@@ -13,30 +13,25 @@ fi
 # 临时文件用于存储新数据
 temp_file="/tmp/new_googlebot_ips.txt"
 
-# 获取 Cloudflare 地址，添加 set_real_ip_from 前缀并保存到 cloudflare_ips_v4.txt 文件中（不变）
-curl https://www.cloudflare.com/ips-v4 | awk '{print "set_real_ip_from " $1 ";"}' > /www/googlebot_ips/cloudflare_ips_v4.txt && chmod 777 /www/googlebot_ips/cloudflare_ips_v4.txt
-
-# 备份 googlebot_ips.txt 文件
-cp /www/googlebot_ips/googlebot_ips.txt /www/googlebot_ips/googlebot_ips.txt.bak
-
-# 清空 googlebot_ips.txt 文件
+# 清空 googlebot_ips.txt
 > /www/googlebot_ips/googlebot_ips.txt
 
-# 从 Google JSON 数据获取 IPv4 和 IPv6 地址段，并追加到 googlebot_ips.txt 文件中
-curl -s https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | select(.ipv4Prefix or .ipv6Prefix) | .ipv4Prefix, .ipv6Prefix' | while read -r ip; do
-  if [[ $ip != "null" ]]; then
-    echo "allow $ip;" >> /www/googlebot_ips/googlebot_ips.txt
-  fi
-done
+# 获取 Cloudflare 地址，添加 set_real_ip_from 前缀并保存到 cloudflare_ips_v4.txt 文件中
+curl -s https://www.cloudflare.com/ips-v4 | awk '{print "set_real_ip_from " $1 ";"}' > /www/googlebot_ips/cloudflare_ips_v4.txt && chmod 777 /www/googlebot_ips/cloudflare_ips_v4.txt
 
-# 还原 googlebot_ips.txt 文件，将备份的内容追加到末尾
-cat /www/googlebot_ips/googlebot_ips.txt.bak >> /www/googlebot_ips/googlebot_ips.txt
+# 从 Google JSON 数据获取 IPv4 地址，如果非空且有效，则追加到 googlebot_ips.txt 文件中
+curl -s https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | select(.ipv4Prefix != null) | .ipv4Prefix' >> "$temp_file"
 
-# 从 Bing JSON 数据获取 IPv4 地址段，并追加到 googlebot_ips.txt 文件末尾
-curl -s https://www.bing.com/toolbox/bingbot.json | jq -r '.[] | select(.ipv4Prefix) | .ipv4Prefix' >> /www/googlebot_ips/googlebot_ips.txt
+# 从 Google JSON 数据获取 IPv6 地址，如果非空且有效，则追加到临时文件中
+curl -s https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | select(.ipv6Prefix != null) | .ipv6Prefix' >> "$temp_file"
 
-# 删除备份文件
-rm /www/googlebot_ips/googlebot_ips.txt.bak
+# 从 Bing JSON 数据获取 IPv4 地址，如果非空且有效，则追加到 googlebot_ips.txt 文件中
+curl -s https://www.bing.com/toolbox/bingbot.json | jq -r '.[] | select(.ipv4Prefix != null) | .ipv4Prefix' >> /www/googlebot_ips/googlebot_ips.txt
+
+# 将临时文件覆盖到 googlebot_ips.txt
+mv "$temp_file" /www/googlebot_ips/googlebot_ips.txt
 
 # 将文件权限设置为777
 chmod 777 /www/googlebot_ips/*
+
+echo "脚本执行完成。"

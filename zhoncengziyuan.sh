@@ -30,3 +30,6 @@ sudo cd /root
 # 安装宝塔面板
 sudo wget -O install.sh https://download.bt.cn/install/install_lts.sh
 sudo bash install.sh ed8484bec -y
+
+### 获取服务器全部可用IP
+curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/huoqufujia_ip.sh | bash

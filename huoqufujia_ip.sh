@@ -1,7 +1,8 @@
 #!/bin/bash
 
+cd /www/wwwroot/data/
 # 保存IP段的文件路径
-output_file="/www/wwwroot/data/服务器全部IP.txt"
+output_file="服务器全部IP.txt"
 
 # 清空文件内容，如果文件存在的话
 > "$output_file"

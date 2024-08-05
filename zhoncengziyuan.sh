@@ -13,7 +13,7 @@ device=$(lsblk -nrdo NAME,TYPE,SIZE | sort -rk 3,3 | head -n 1 | awk '{print "/d
 sudo mkfs.ext4 $device
 sudo mkdir -p /www
 sudo mount $device /www
-
+sleep 3
 # 下载必要工具包到/www/wwwroot/data/目录。
 sudo yum install wget -y
 sudo yum install unzip -y
@@ -21,20 +21,27 @@ sudo mkdir -p /www/wwwroot/data/
 cd /www/wwwroot/data/
 sudo wget https://www.addlink.lol/data/wp%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7.zip
 unzip wp必备工具.zip
+sleep 3
 sudo rm -rf /www/wwwroot/data/wp必备工具.zip
 
+sudo yum install dos2unix -y
+sleep 3
+dos2unix /www/wwwroot/data/wp必备工具/生成网站主脚本/app-生成网站sql文件.sh
+sleep 3
+dos2unix /www/wwwroot/data/wp必备工具/生成网站主脚本/add-导入数据库.sh
+sleep 5
 sudo cd /root
 
 # 安装python
 curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/python3.9.sh | bash
 # 使环境变量生效（有时候需要，有时候不需要）
 source ~/.bash_profile
-
+sleep 5
 sudo cd /root
 
 # 安装宝塔面板
 sudo wget -O install.sh https://download.bt.cn/install/install_lts.sh
 sudo bash install.sh ed8484bec -y
-
+sleep 3
 ### 获取服务器全部可用IP
 curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/huoqufujia_ip.sh | bash

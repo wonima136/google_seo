@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # 更新yum源
-curl -O http://mirror-sv.raksmart.com/pull_mirror_file.sh && bash pull_mirror_file.sh -y
-
+curl -O http://mirror-sv.raksmart.com/pull_mirror_file.sh && bash pull_mirror_file.sh <<< "y"
 
 # 卸载挂载在/home的文件系统。
 sudo umount /home  # 如果已经卸载，则会显示：umount: /home: not mounted

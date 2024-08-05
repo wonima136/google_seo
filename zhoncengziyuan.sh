@@ -24,12 +24,14 @@ unzip wp必备工具.zip
 sudo rm -rf /www/wwwroot/data/wp必备工具.zip
 
 sudo cd /root
+
 # 安装python
 curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/python3.9.sh | bash
 # 使环境变量生效（有时候需要，有时候不需要）
 source ~/.bash_profile
 
 sudo cd /root
+
 # 安装宝塔面板
 sudo wget -O install.sh https://download.bt.cn/install/install_lts.sh
 sudo bash install.sh ed8484bec -y

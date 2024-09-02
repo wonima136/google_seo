@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# 检查目录是否存在，如果不存在则创建目录
+if [ ! -d "/www/wwwroot/data/" ]; then
+  mkdir -p /www/wwwroot/data/
+
 cd /www/wwwroot/data/
 # 保存IP段的文件路径
 output_file="服务器全部IP.txt"

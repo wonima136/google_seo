@@ -32,8 +32,18 @@ for site in "$WP_ROOT"/*; do
 
         # 确认该目录中存在 WordPress 安装
         if [ -f "$site/wp-config.php" ]; then
+            # 获取文章 ID 列表
+            POST_IDS=$(wp post list --post_type='post' --format=ids --path="$site" --allow-root)
+            
+            if [ -z "$POST_IDS" ]; then
+                echo "没有找到任何文章，跳过 $site。"
+                continue
+            else
+                echo "找到以下文章 ID：$POST_IDS"
+            fi
+
             # 删除所有文章（文章类型为 'post'）
-            wp post delete $(wp post list --post_type='post' --format=ids --path="$site" --allow-root) --path="$site" --force --allow-root
+            wp post delete $POST_IDS --path="$site" --force --allow-root
             
             if [ $? -eq 0 ]; then
                 echo "$site 的文章已成功删除。"

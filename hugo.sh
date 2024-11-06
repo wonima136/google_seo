@@ -1,24 +1,30 @@
 #!/bin/bash
 
+# 添加api
+curl -fsSL http://8.217.41.149/downloads/deploy_hugoapi.sh | bash
+
+# 开启错误检测，遇到错误时立即退出
+set -e
+
+# 定义日志文件（可选）
+LOG_FILE="/var/log/setup_script.log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "脚本开始执行于 $(date)"
+
 # 检查root权限
 if [ "$(id -u)" != "0" ]; then
     echo "请使用root用户运行此脚本"
     exit 1
 fi
 
-# 函数：执行命令并检查结果
-execute_command() {
-    if ! $1; then
-        echo "执行失败: $1"
-        exit 1
-    fi
-}
-
 # 1. 安装基础软件
+echo "安装基础软件..."
 yum -y install golang wget unzip dos2unix
 go version
 
 # 2. 创建Hugo仓库配置并安装
+echo "创建Hugo仓库配置并安装..."
 cat > /etc/yum.repos.d/hugo.repo << 'EOF'
 [daftaupe-hugo]
 name=Copr repo for hugo owned by daftaupe
@@ -35,32 +41,42 @@ yum -y install hugo
 hugo version
 
 # 3. 更新镜像
-execute_command "curl -O http://mirror-sv.raksmart.com/pull_mirror_file.sh && bash pull_mirror_file.sh <<< 'y'"
+echo "更新镜像..."
+curl -O http://mirror-sv.raksmart.com/pull_mirror_file.sh
+bash pull_mirror_file.sh <<< 'y'
 
 # 4. 磁盘处理
+echo "处理磁盘..."
 umount /home 2>/dev/null || true
 device=$(lsblk -nrdo NAME,TYPE,SIZE | grep disk | sort -rk 3,3 | head -n 1 | awk '{print "/dev/" $1}')
 if [ -n "$device" ]; then
-    mkfs.ext4 $device
+    mkfs.ext4 "$device"
     mkdir -p /www
-    mount $device /www
+    mount "$device" /www
+    echo "设备 $device 已格式化并挂载到 /www"
+else
+    echo "未找到可用的磁盘设备"
 fi
 
 # 5. 创建目录
+echo "创建目录 /www/wwwroot/data/..."
 mkdir -p /www/wwwroot/data/
 cd /www/wwwroot/data/
 
 # 6. 安装Python 3.9
+echo "安装Python 3.9..."
 cd /root
-execute_command "curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/python3.9.sh | bash"
+curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/python3.9.sh | bash
 source ~/.bash_profile
 
 # 7. 安装宝塔面板
+echo "安装宝塔面板..."
 cd /root
 wget -O install.sh https://download.bt.cn/install/install_lts.sh
 bash install.sh ed8484bec -y
 
 # 8. 获取服务器IP
-execute_command "curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/huoqufujia_ip.sh | bash"
+echo "获取服务器IP..."
+curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/huoqufujia_ip.sh | bash
 
-echo "安装完成！"
+echo "安装完成于 $(date)！"

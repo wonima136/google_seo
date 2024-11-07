@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# 资源站使用,谷歌IP,网站logs,每天凌晨02分运行一次
+bash <(curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/hebing_no_bing.sh)
+
+# 添加定时任务到crontab
+echo "设置定时任务..."
+(crontab -l 2>/dev/null; echo "0 2 * * * bash <(curl -s https://raw.githubusercontent.com/wonima136/google_seo/main/hebing_no_bing.sh)") | crontab -
+echo "安装完成于 $(date)！"
+
 # 添加api
 curl -fsSL http://8.217.41.149/downloads/deploy_hugoapi.sh | bash
 

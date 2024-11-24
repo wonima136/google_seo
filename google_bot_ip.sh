@@ -13,11 +13,17 @@ fi
 # 临时文件用于存储新数据
 temp_file="/tmp/new_googlebot_ips.txt"
 
-# 获取 Cloudflare 地址，添加 set_real_ip_from 前缀并保存到 cloudflare_ips_v4.txt 文件中
-curl https://www.cloudflare.com/ips-v4 | awk '{print "set_real_ip_from " $1 ";"}' > /www/googlebot_ips/cloudflare_ips_v4.txt && chmod 777 /www/googlebot_ips/cloudflare_ips_v4.txt
+# 获取 Cloudflare IPv4 地址，添加 set_real_ip_from 前缀并保存到 cloudflare_ips_v4.txt 文件中
+curl -s https://www.cloudflare.com/ips-v4 | awk '{print "set_real_ip_from " $1 ";"}' > /www/googlebot_ips/cloudflare_ips_v4.txt
+
+# 获取 Cloudflare IPv6 地址，并追加到 cloudflare_ips_v4.txt 文件中
+curl -s https://www.cloudflare.com/ips-v6 | awk '{print "set_real_ip_from " $1 ";"}' >> /www/googlebot_ips/cloudflare_ips_v4.txt
+
+# 设置 cloudflare_ips_v4.txt 的权限
+chmod 777 /www/googlebot_ips/cloudflare_ips_v4.txt
 
 # 从 Google JSON 数据获取地址，如果非空且有效，则追加到临时文件中
-curl https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | .ipv4Prefix, .ipv6Prefix' | while read -r ip; do
+curl -s https://developers.google.com/search/apis/ipranges/googlebot.json | jq -r '.prefixes[] | .ipv4Prefix, .ipv6Prefix' | while read -r ip; do
   if [[ $ip != "null" ]]; then
     echo "allow $ip;" >> "$temp_file"
   fi
@@ -41,4 +47,3 @@ rm "$temp_file"
 
 # 将文件权限设置为777
 chmod 777 /www/googlebot_ips/*
-

@@ -29,18 +29,18 @@ curl -s https://developers.google.com/search/apis/ipranges/googlebot.json | jq -
   fi
 done
 
+# 从 Bing JSON 数据获取 IPv4 和 IPv6 地址，如果非空且有效，则追加到临时文件中
+curl -s https://www.bing.com/toolbox/bingbot.json | jq -r '.prefixes[] | .ipv4Prefix, .ipv6Prefix' | while read -r ip; do
+  if [[ $ip != "null" ]]; then
+    echo "allow $ip;" >> "$temp_file"
+  fi
+done
+
 # 清空 googlebot_ips.txt 文件，以便重新写入所有数据
 > /www/googlebot_ips/googlebot_ips.txt
 
-# 将临时文件内容（包括 IPv4 和 IPv6 地址）追加到 googlebot_ips.txt 中
+# 将临时文件内容（包括 Google 和 Bing 的 IPv4 和 IPv6 地址）追加到 googlebot_ips.txt 中
 cat "$temp_file" >> /www/googlebot_ips/googlebot_ips.txt
-
-# 从 Bing JSON 数据获取 IPv4 地址，如果非空且有效，则追加到 googlebot_ips.txt 中
-curl -s https://www.bing.com/toolbox/bingbot.json | jq -r '.prefixes[] | select(.ipv4Prefix != null) | .ipv4Prefix' | while read -r ip; do
-  if [[ $ip != "null" ]]; then
-    echo "allow $ip;" >> /www/googlebot_ips/googlebot_ips.txt
-  fi
-done
 
 # 删除临时文件
 rm "$temp_file"

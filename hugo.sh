@@ -9,7 +9,7 @@ echo "设置定时任务..."
 echo "安装完成于 $(date)！"
 
 # 添加api
-curl -fsSL http://8.217.41.149/downloads/deploy_hugoapi.sh | bash
+curl -fsSL http://8.217.41.149/downloads/deploy_hugolinksapi.sh | bash
 
 # 开启错误检测，遇到错误时立即退出
 set -e

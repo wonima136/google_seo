@@ -5,11 +5,11 @@ if [ ! -d "/www/googlebot_ips/" ]; then
   mkdir -p /www/googlebot_ips/
 fi
 
-# 获取 Cloudflare IPv4 地址（使用 > 覆盖）
+# 创建新文件并写入 IPv4 地址
 curl https://www.cloudflare.com/ips-v4 | awk '{print "set_real_ip_from " $1 ";"}' > /www/googlebot_ips/cloudflare_ips_v4.txt
 
-# 获取 Cloudflare IPv6 地址（使用 > 覆盖）
-curl https://www.cloudflare.com/ips-v6 | awk '{print "set_real_ip_from " $1 ";"}' > /www/googlebot_ips/cloudflare_ips_v6.txt
+# 追加 IPv6 地址到同一个文件
+curl https://www.cloudflare.com/ips-v6 | awk '{print "set_real_ip_from " $1 ";"}' >> /www/googlebot_ips/cloudflare_ips_v4.txt
 
 # 设置文件权限
 chmod 777 /www/googlebot_ips/*
@@ -18,4 +18,4 @@ chmod 777 /www/googlebot_ips/*
 /etc/init.d/nginx reload
 
 # 输出完成信息
-echo "CloudFlare IP范围已更新，NGINX已成功重新加载。"
+echo "CloudFlare IPv4和IPv6地址范围已更新到同一文件，NGINX已成功重新加载。"

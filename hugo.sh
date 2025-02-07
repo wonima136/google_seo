@@ -80,8 +80,8 @@ source ~/.bash_profile
 # 7. 安装宝塔面板
 echo "安装宝塔面板..."
 cd /root
-wget -O install.sh https://download.bt.cn/install/install_lts.sh
-bash install.sh ed8484bec -y
+wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh
+bash install_panel.sh ed8484bec -y
 
 # 8. 获取服务器IP
 echo "获取服务器IP..."

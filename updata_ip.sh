@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # 从提供的URL获取IP，并保存到文件中，并添加 "allow" 前缀和 ";" 后缀
-curl https://www.addlink.lol/data/ip.txt | awk '{print "allow " $1 ";"}' > /www/googlebot_ips/whitelist_ips.txt
+curl http://ip.3306.site/data/ip.txt | awk '{print "allow " $1 ";"}' > /www/googlebot_ips/whitelist_ips.txt
 
 # 将文件权限设置为777
 chmod 777 /www/googlebot_ips/*
